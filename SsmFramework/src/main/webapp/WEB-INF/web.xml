@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+  <display-name>SsmFramework</display-name>
+
+  <!-- Spring和mybatis的配置文件 -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+    <!-- 编码过滤器 -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <!--<async-supported>true</async-supported>-->
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- Spring监听器:启动Web容器时，自动装配ApplicationContext的配置信息，即上面的：contextConfigLocation-->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <!-- 防止Spring内存溢出监听器 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+    <!-- Spring MVC servlet -->
+    <servlet>
+        <servlet-name>springMVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring-mvc.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+        <!--<async-supported>true</async-supported>-->
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springMVC</servlet-name>
+        <!-- 此处可以可以配置成*.do，对应struts的后缀习惯 也可以是/-->
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+
+  <error-page>
+        <error-code>404</error-code>
+        <location>/index.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/index.jsp</location>
+    </error-page>
+    <servlet>
+        <servlet-name>GreetingServlet</servlet-name>
+        <servlet-class>servlets.GreetingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResponseServlet</servlet-name>
+        <servlet-class>servlets.ResponseServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GreetingServlet</servlet-name>
+        <url-pattern>/GreetingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResponseServlet</servlet-name>
+        <url-pattern>/ResponseServlet</url-pattern>
+    </servlet-mapping>
+</web-app>
