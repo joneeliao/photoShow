@@ -2,8 +2,6 @@
 	
 	'use strict';
 
-
-
 	// iPad and iPod detection	
 	var isiPad = function(){
 		return (navigator.platform.indexOf("iPad") != -1);
@@ -11,14 +9,36 @@
 
 	var isiPhone = function(){
 	    return (
-			(navigator.platform.indexOf("<i></i>Phone") != -1) || 
+			(navigator.platform.indexOf("iPhone") != -1) || 
 			(navigator.platform.indexOf("iPod") != -1)
 	    );
 	};
 
-	// Loading page
-	var loaderPage = function() {
-		$(".fh5co-loader").fadeOut("slow");
+	// OffCanvass
+	var offCanvass = function() {
+		$('body').on('click', '.js-fh5co-menu-btn, .js-fh5co-offcanvass-close', function(){
+			$('#fh5co-offcanvass').toggleClass('fh5co-awake');
+		});
+	};
+
+	// Click outside of offcanvass
+	var mobileMenuOutsideClick = function() {
+		$(document).click(function (e) {
+	    var container = $("#fh5co-offcanvass, .js-fh5co-menu-btn");
+	    if (!container.is(e.target) && container.has(e.target).length === 0) {
+	    	if ( $('#fh5co-offcanvass').hasClass('fh5co-awake') ) {
+	    		$('#fh5co-offcanvass').removeClass('fh5co-awake');
+	    	}
+	    }
+		});
+
+		$(window).scroll(function(){
+			if ( $(window).scrollTop() > 500 ) {
+				if ( $('#fh5co-offcanvass').hasClass('fh5co-awake') ) {
+		    		$('#fh5co-offcanvass').removeClass('fh5co-awake');
+		    	}
+	    	}
+		});
 	};
 
 	// Magnific Popup
@@ -52,70 +72,29 @@
 
 
 
-	var contentWayPoint = function() {
-		var i = 0;
-		$('.animate-box').waypoint( function( direction ) {
+	var animateBoxWayPoint = function() {
 
-			if( direction === 'down' && !$(this.element).hasClass('animated') ) {
-				
-				i++;
+		if ($('.animate-box').length > 0) {
+			$('.animate-box').waypoint( function( direction ) {
 
-				$(this.element).addClass('item-animate');
-				setTimeout(function(){
-					
-					$('body .animate-box.item-animate').each(function(k){
-						var el = $(this);
-						setTimeout( function () {
-							el.addClass('fadeIn animated');
-							el.removeClass('item-animate');
-						},  k * 200, 'easeInOutExpo' );
-					});
-					
-				}, 100);
-				
-			}
+				if( direction === 'down' && !$(this).hasClass('animated') ) {
+					$(this.element).addClass('bounceIn animated');
+				}
 
-		} , { offset: '50%' } );
-
+			} , { offset: '75%' } );
+		}
 
 	};
 
+	
 
-	// Document on load.
+	
 	$(function(){
-		loaderPage();
 		magnifPopup();
-		
-		// Animations
-		contentWayPoint();
-		
-		
-
+		offCanvass();
+		mobileMenuOutsideClick();
+		animateBoxWayPoint();
 	});
 
 
 }());
-
-$(document).ready(function() {
-
-	$("body").css("display", "none");
-
-    $("body").fadeIn(2000);
-    $("body").stop().animate({
-    	opacity: 1
-    });
-
-
-	$("a.transition").click(function(event){
-
-		event.preventDefault();
-		linkLocation = this.href;
-		$("body").fadeOut(1000, redirectPage);		
-
-	});
-		
-	function redirectPage() {
-		window.location = linkLocation;
-	}
-	
-});

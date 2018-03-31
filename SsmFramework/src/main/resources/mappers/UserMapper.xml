@@ -25,7 +25,7 @@
 
     <select id="getTotalUser" parameterType="Map" resultType="Long">
         <!--select count(*) from xxct_user-->
-        select count(1) from user_objects
+        select count(1) from xxct_user
         <!--
         <where>
             <if test="userName!=null and userName!='' ">

@@ -30,13 +30,11 @@
             }
         }
     }
+
+
 </script>
 <h2>Hello Cloud World!</h2>
-<p STYLE="font-size: 30px">傻叉，说<BR/>你喜不喜欢我！！！</p>
-<BR/>
-<span style="font-size: 50px; color: red; font-weight: bolder">很喜欢：</span><input id="likeid"   type="radio"   value="Y"    name="like"  style="width: 100px;height: 100px" onclick="to_change()"/>
-不喜欢：<input id="unlikeid"   type="radio"   value="N"    name="like"  style="width: 100px;height: 100px" onclick="to_change()"/>
-<!--
+
 <form id=adminlogin method=post
       name=adminlogin action="${pageContext.request.contextPath}/user/save.do">
     <table border=0 cellSpacing=0 cellPadding=0 width="100%">
@@ -68,7 +66,7 @@
     </table>
 
 </form>
--->
+
 
 </body>
 </html>

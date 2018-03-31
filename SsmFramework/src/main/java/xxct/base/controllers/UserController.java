@@ -149,19 +149,7 @@ public class UserController {
         try {
             String MD5pwd = MD5Util.MD5Encode(user.getPassword(), "UTF-8");
             user.setPassword(MD5pwd);
-            if (user.getId() == null || "".equals(user.getId())) {
-                user.setId(1);
-            }
-            //resultTotal = userService.addUser(user);
-            PageBean pageBean = new PageBean(10, 10);
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("start", pageBean.getStart());
-            map.put("size", pageBean.getPageSize());
-            total = userService.getTotalUser(map);
-            userList = userService.findUser(map);
-            result.put("userList", userList.size());
-            result.put("total", total);
-            resultTotal = 1;
+            resultTotal = userService.addUser(user);
         } catch (Exception e) {
             System.out.println(1111);
             msg = e.getMessage();
@@ -175,7 +163,8 @@ public class UserController {
             result.put("msg", msg);
         }
         log.info("request: user/save , user: " + user.toString());
-        ResponseUtil.write(response, result);
+        response.sendRedirect("/index");
+        //ResponseUtil.write(response, result);
         return null;
     }
 
