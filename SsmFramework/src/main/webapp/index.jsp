@@ -45,7 +45,7 @@
         </tr>
         <tr>
             <td style="height: 45px"> Password</td>
-            <td style="height: 45px"><input type="password" class=input value="${user.password }" name="password"
+            <td style="height: 45px"><input type="password" class=input value="${user.password}" name="password"
                                             id="password"/></td>
         </tr>
         <tr>

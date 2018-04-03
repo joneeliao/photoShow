@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xxct.base.dao.XxctFilesMapper">
+    <resultMap type="xxct.base.domain.XxctFiles" id="BaseResultMap">
+        <result property="picId" column="PIC_ID" jdbcType="DECIMAL"/>
+        <result property="fileName" column="FILE_NAME" jdbcType="VARCHAR"/>
+        <result property="fileType" column="FILE_TYPE" jdbcType="VARCHAR"/>
+        <result property="fileTitle" column="FILE_TITLE" jdbcType="VARCHAR"/>
+        <result property="fileDescription" column="FILE_DESCRIPTION" jdbcType="VARCHAR"/>
+        <result property="fileLocation" column="FILE_LOCATION" jdbcType="VARCHAR"/>
+        <result property="creationDate" column="CREATION_DATE" jdbcType="TIMESTAMP"/>
+        <result property="createdBy" column="CREAED_BY" jdbcType="VARCHAR"/>
+        <result property="fileFrom" column="FILE_FROM" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="addFile" parameterType="xxct.base.domain.XxctFiles" >
+
+        INSERT INTO xxct_files
+        (FILE_NAME,FILE_TYPE,FILE_TITLE,FILE_DESCRIPTION,FILE_LOCATION,CREATION_DATE,CREAED_BY,FILE_FROM)
+        VALUES
+        (#{fileName},#{fileType},#{fileTitle},#{fileDescription},#{fileLocation},now(),#{createdBy},#{fileFrom})
+
+    </insert>
+
+    <update id="updateFile" parameterType="xxct.base.domain.XxctFiles">
+        UPDATE xxct_files
+        <set>
+            <if test="fileTitle!=null and fileTitle!='' ">
+                FILE_TITLE = #{fileTitle},
+            </if>
+            <if test="fileDescription!=null and fileDescription!='' ">
+                FILE_DESCRIPTION = #{fileDescription}
+            </if>
+        </set>
+        WHERE
+        PIC_ID = #{picId};
+    </update >
+
+    <delete id="deleteFile" parameterType="java.lang.Integer">
+        delete from xxct_files
+        where PIC_ID=#{id}
+    </delete>
+
+    <select id="selectFiles" parameterType="xxct.base.domain.XxctFiles" resultMap="BaseResultMap">
+        select *
+        from xxct_files xpp
+        <where>
+            1=1
+            <if test="fileName != null and '' != fileName ">
+                and xpp.FILE_NAME like CONCAT('%',#{fileName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="fileTitle != null and '' != fileTitle ">
+                and xpp.FILE_TITLE like CONCAT('%',#{fileTitle,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="fileDescription != null and '' != fileDescription ">
+                and xpp.FILE_DESCRIPTION like CONCAT('%',#{fileDescription,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+        order by PIC_ID desc
+    </select>
+</mapper> 

@@ -61,6 +61,7 @@
         <error-code>500</error-code>
         <location>/index.html</location>
     </error-page>
+
     <servlet>
         <servlet-name>GreetingServlet</servlet-name>
         <servlet-class>servlets.GreetingServlet</servlet-class>
@@ -77,4 +78,15 @@
         <servlet-name>ResponseServlet</servlet-name>
         <url-pattern>/ResponseServlet</url-pattern>
     </servlet-mapping>
+
+    <!-- Upload home html -->
+    <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>servlets.UploadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+
 </web-app>

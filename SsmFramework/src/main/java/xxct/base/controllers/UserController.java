@@ -25,7 +25,7 @@ import xxct.utils.ResponseUtil;
 import xxct.utils.StringUtil;
 
 /**
- * @author 1034683568@qq.com
+ * @author
  * @project_name ssm-maven
  * @date 2017-3-1
  */
@@ -45,25 +45,39 @@ public class UserController {
      * @return
      */
     @RequestMapping("/login")
-    public String login(User user, HttpServletRequest request) {
+    public String login(User user, HttpServletRequest request, HttpServletResponse response) throws Exception {
         System.out.println(user.toString());
+        JSONObject result = new JSONObject();
+        User userSession = (User) request.getSession().getAttribute("user");
+        Object object = request.getSession().getAttribute("isLogin");
+        if (userSession != null && (object != null)) {
+            //return "redirect:/login.html";
+            result.put("success", true);
+            ResponseUtil.write(response, result);
+            return result.toString();
+        }
+
         try {
             String MD5pwd = MD5Util.MD5Encode(user.getPassword(), "UTF-8");
+            System.out.println("MD5pwd:" + MD5pwd);
             user.setPassword(MD5pwd);
         } catch (Exception e) {
             user.setPassword("");
         }
         User resultUser = userService.login(user);
-        log.info("request: user/login , user: " + user.toString());
+
+
         if (resultUser == null) {
-            request.setAttribute("user", user);
-            request.setAttribute("errorMsg", "请认真核对账号、密码！");
-            return "login";
+            result.put("success", false);
+            result.put("message", "请认真核对账号、密码！");
+            ResponseUtil.write(response, result);
+            return result.toString();
         } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("currentUser", resultUser);
-            MDC.put("userName", user.getUserName());
-            return "redirect:/success.jsp";
+            result.put("success", true);
+            request.getSession().setAttribute("user", resultUser);
+            request.getSession().setAttribute("isLogin", true);
+            ResponseUtil.write(response, result);
+            return result.toString();
         }
     }
 
